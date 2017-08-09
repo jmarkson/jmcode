@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.StringJoiner;
 
 import kx.c;
 import kx.c.*;
@@ -32,20 +31,22 @@ public class Subscriber
             if (response != null)
             {
                 Object[] data = (Object[]) response;
-
-                String tableName = (data[1]).toString();
+                // table name is in data[1]
                 c.Flip table = (c.Flip) data[2];
                 String[] columnNames = table.x;
                 Object[] columnData = table.y;
+                int rowCount = c.n(columnData[0]);
 
-                System.out.println("tableName: " + tableName);
-
-                System.out.printf("%s\t\t\t\t%s\t%s\t%s\n", columnNames[0], columnNames[1], columnNames[2], columnNames[3]);
-                System.out.println("-------------------------------------");
-                System.out.printf("%s\t%s\t%s\t%s\n", c.at(columnData[0], 0).toString(),
-                                                      c.at(columnData[1], 0).toString(),
-                                                      c.at(columnData[2], 0).toString(),
-                                                      c.at(columnData[3], 0).toString());
+                System.out.printf("%s\t\t\t%s\t%s\t%s\n", columnNames[0], columnNames[1], columnNames[2], columnNames[3]);
+                System.out.println("--------------------------------------------");
+                for (int i = 0; i < rowCount; i++)
+                {
+                    float value = Float.parseFloat(c.at(columnData[2],i).toString());
+                    System.out.printf("%s\t%s\t%3.2f\t%s\n", c.at(columnData[0], i).toString(),
+                                                             c.at(columnData[1], i).toString(),
+                                                             value,
+                                                             c.at(columnData[3], i).toString());
+                }
             }
         }
     }
