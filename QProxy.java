@@ -38,14 +38,14 @@ public class QProxy
 
     private void qProxy() throws IOException, KException
     {
-        Object o = sCon.k();
-        try
+        while (true)
         {
-            sCon.kr(cCon.k(o));
-        }
-        catch (IOException | KException e)
-        {
-            sCon.ke(e.getMessage());
+            Object o = sCon.k();
+            try {
+                sCon.kr(cCon.k(o));
+            } catch (IOException | KException e) {
+                sCon.ke(e.getMessage());
+            }
         }
     }
 }
